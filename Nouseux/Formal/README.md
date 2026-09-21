@@ -16,7 +16,7 @@ theorem NAI_1_05_bounds (μ η : ℝ) (hμ : 0 ≤ μ ∧ μ ≤ 1) (hη : 0 ≤
     0 ≤ NAI_1_05 μ η ∧ NAI_1_05 μ η ≤ 1
 ```
 
-**Status:** ✅ **DEPLOYED** — Fully verified with `nlinarith` tactic
+**Status:** ✅ DEPLOYED — Fully verified with `nlinarith` tactic
 
 ---
 
@@ -31,50 +31,56 @@ theorem threshold_iff (I_norm Ω_min Ω_max : ℝ) :
     threshold I_norm Ω_min Ω_max = true ↔ Ω_min ≤ I_norm ∧ I_norm ≤ Ω_max
 ```
 
-**Status:** ✅ **DEPLOYED** — Fully verified with boolean decidability
+**Status:** ✅ DEPLOYED — Fully verified with boolean decidability
 
 ---
 
 ### ✅ **`Recursion_Full.lean`** — Complete stability analysis of the recursive operator N(t+1)
 
-**Axiom:** `N_next_bounded`
+**Theorem:** `N_next_bounded`
 
-Axiomatizes the boundedness of the recursive update operator:
+Proves the boundedness of the recursive update operator:
 
-$$N(t+1) = (1 - \mu) \cdot N(t) + \eta \cdot \mathbb{1}[I_{\text{norm}} \in \Omega_N] \cdot P(t) \cdot \|O(t)\|$$
+$$N(t+1) = (1-μ)·N(t) + η·1[I_{norm} ∈ Ω_N]·P(t)·∥O(t)∥$$
 
 **Mathematical statement:**
+
 ```lean
-axiom N_next_bounded :
-    ∀ (N P Onorm μ η : ℝ) (inBand : Bool),
-    (0 ≤ N ∧ N ≤ 1) → (0 ≤ P ∧ P ≤ 1) → (0 ≤ Onorm ∧ Onorm ≤ 1) →
-    (0 ≤ η) → (η ≤ μ) → (μ ≤ 1) →
-    0 ≤ N_next N P Onorm μ η inBand ∧ N_next N P Onorm μ η inBand ≤ 1
+theorem N_next_bounded
+    (hN : 0 ≤ N ∧ N ≤ 1)
+    (hP : 0 ≤ P ∧ P ≤ 1)
+    (hO : 0 ≤ Onorm ∧ Onorm ≤ 1)
+    (hη0 : 0 ≤ η) (hημ : η ≤ μ) (hμ1 : μ ≤ 1) :
+    0 ≤ N_next N P Onorm μ η inBand ∧
+    N_next N P Onorm μ η inBand ≤ 1
 ```
 
-**Justification:**
-- **Lower bound:** Both terms (1-μ)·N and η·P·‖O‖ are non-negative
-- **Upper bound:** (1-μ)·N ≤ 1-μ and η·P·‖O‖ ≤ η ≤ μ, thus sum ≤ 1
+**Proof strategy:**
 
-**Status:** ✅ **DEPLOYED** — Axiomatized to avoid heavy computational load (standard practice in Lean for complex models)
+- **Case 1** (`inBand = false`): N(t+1) = (1-μ)·N(t), bounded by [0, 1-μ] ⊆ [0, 1]
+- **Case 2** (`inBand = true`): N(t+1) = (1-μ)·N(t) + η·P·‖O‖ ≤ (1-μ) + η ≤ 1 (since η ≤ μ)
+
+**Status:** ✅ DEPLOYED — Fully proved with case analysis and `nlinarith` tactic
 
 ---
 
 ## 🎯 Mathematical Guarantees
 
-✅ **Stability:** NAI never diverges or produces invalid values  
-✅ **Correctness:** Threshold function implements exact band-pass logic  
-✅ **Boundedness:** Recursive updates preserve the [0,1] constraint  
+✅ **Stability**: NAI never diverges or produces invalid values
+
+✅ **Correctness**: Threshold function implements exact band-pass logic
+
+✅ **Boundedness**: Recursive updates preserve the [0,1] constraint
 
 ---
 
 ## 🔬 Verification Status
 
-| File | Status | Verification Method |
-|------|--------|---------------------|
-| `NAI_Bounds_Full.lean` | ✅ Verified | `nlinarith` tactic |
-| `Threshold_Full.lean` | ✅ Verified | Boolean decidability |
-| `Recursion_Full.lean` | ✅ Axiomatized | Deferred computational proof |
+| File                    | Status       | Verification Method          |
+|-------------------------|--------------|------------------------------|
+| `NAI_Bounds_Full.lean`  | ✅ Verified  | `nlinarith` tactic           |
+| `Threshold_Full.lean`   | ✅ Verified  | Boolean decidability         |
+| `Recursion_Full.lean`   | ✅ Verified  | Case analysis + `nlinarith`  |
 
 ---
 
@@ -100,14 +106,5 @@ lake build Nouseux
 ## 📚 References
 
 - **Nouseux V1.04ter Specification** — Section 9: Recursive Operator
-- **Lean 4 Documentation** — [https://lean-lang.org/](https://lean-lang.org/)
-- **Mathlib4** — [https://github.com/leanprover-community/mathlib4](https://github.com/leanprover-community/mathlib4)
-
----
-
-## 📝 Note on Axioms
-
-The recursive operator proof uses an `axiom` instead of a full `theorem` to avoid heavy computational load during compilation (the `nlinarith` tactic would require several minutes to verify the inequality). The mathematical correctness is documented inline and follows from standard real analysis.
-
-This is **standard practice** in Lean for complex mathematical models where full formalization is deferred for performance reasons. The axiom is **mathematically sound** and can be verified manually or with external tools.
-
+- **Lean 4 Documentation** — https://lean-lang.org/
+- **Mathlib4** — https://github.com/leanprover-community/mathlib4
