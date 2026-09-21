@@ -1,10 +1,12 @@
-import Mathlib.Tactic
+import Mathlib.Tactic.Linarith
+import Mathlib.Tactic.Ring
+import Mathlib.Basic.Real.Basic
 
 namespace Nouseux
 
 variable (ISI IPM ICM IAI IDC ICI : ℝ)
 
-/-- Hypotheses: all sub-indices are normalized to the unit interval. -/
+-- Hypotheses: all sub-indices are normalized to the unit interval.
 variable (hISI : 0 ≤ ISI ∧ ISI ≤ 1)
          (hIPM : 0 ≤ IPM ∧ IPM ≤ 1)
          (hICM : 0 ≤ ICM ∧ ICM ≤ 1)
@@ -13,11 +15,12 @@ variable (hISI : 0 ≤ ISI ∧ ISI ≤ 1)
          (hICI : 0 ≤ ICI ∧ ICI ≤ 1)
 
 /-- Version 1.04, subtractive definition. -/
-def NAI_104 : ℝ := (ISI + IPM + ICM + IAI - IDC + ICI) / 6
+noncomputable def NAI_104 : ℝ := (ISI + IPM + ICM + IAI - IDC + ICI) / 6
 
 /-- Version 1.05, normalized definition. -/
-def NAI_105 : ℝ := (ISI + IPM + ICM + IAI + (1 - IDC) + ICI) / 6
+noncomputable def NAI_105 : ℝ := (ISI + IPM + ICM + IAI + (1 - IDC) + ICI) / 6
 
+include hISI hIPM hICM hIAI hIDC hICI in
 /-- Theoretical range of NAI_1.04 is [-1/6, 5/6]. -/
 theorem NAI_104_bounds :
     -1/6 ≤ NAI_104 ISI IPM ICM IAI IDC ICI ∧
@@ -30,9 +33,10 @@ theorem NAI_104_bounds :
   obtain ⟨hICI1, hICI2⟩ := hICI
   unfold NAI_104
   constructor
-  · nlinarith
-  · nlinarith
+  · linarith
+  · linarith
 
+include hISI hIPM hICM hIAI hIDC hICI in
 /-- Theoretical range of NAI_1.05 is [0, 1]. -/
 theorem NAI_105_bounds :
     0 ≤ NAI_105 ISI IPM ICM IAI IDC ICI ∧
@@ -45,8 +49,8 @@ theorem NAI_105_bounds :
   obtain ⟨hICI1, hICI2⟩ := hICI
   unfold NAI_105
   constructor
-  · nlinarith
-  · nlinarith
+  · linarith
+  · linarith
 
 /-- Exact linear relation between the two scales, before clamping. -/
 theorem NAI_scale_relation :
@@ -56,3 +60,4 @@ theorem NAI_scale_relation :
   ring
 
 end Nouseux
+
