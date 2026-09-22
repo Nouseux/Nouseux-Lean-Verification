@@ -1,4 +1,5 @@
-import Mathlib.Tactic
+import Mathlib.Tactic.Linarith
+import Mathlib.Basic.Real.Basic
 
 namespace NouseuxThreshold
 
@@ -18,11 +19,11 @@ theorem band_well_formed
 
 /-- Exhaustivité : au moins un des trois régimes est satisfait. -/
 theorem regimes_exhaustive
-    (h0 : 0 ≤ Inorm)
-    (h1 : Inorm ≤ 1)
-    (hεL : 0 < εL)
-    (hεU : εU < 1)
-    (hεLU : εL < εU) :
+    (_h0 : 0 ≤ Inorm)
+    (_h1 : Inorm ≤ 1)
+    (_hεL : 0 < εL)
+    (_hεU : εU < 1)
+    (_hεLU : εL < εU) :
     Inorm < εL ∨
     (εL ≤ Inorm ∧ Inorm ≤ εU) ∨
     εU < Inorm := by

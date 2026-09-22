@@ -1,63 +1,57 @@
 import Mathlib.Tactic.Linarith
-import Mathlib.Tactic.Ring
 import Mathlib.Basic.Real.Basic
 
-namespace Nouseux
+namespace NouseuxThreshold
 
-variable (ISI IPM ICM IAI IDC ICI : ℝ)
+variable (Inorm εL εU : ℝ)
 
--- Hypotheses: all sub-indices are normalized to the unit interval.
-variable (hISI : 0 ≤ ISI ∧ ISI ≤ 1)
-         (hIPM : 0 ≤ IPM ∧ IPM ≤ 1)
-         (hICM : 0 ≤ ICM ∧ ICM ≤ 1)
-         (hIAI : 0 ≤ IAI ∧ IAI ≤ 1)
-         (hIDC : 0 ≤ IDC ∧ IDC ≤ 1)
-         (hICI : 0 ≤ ICI ∧ ICI ≤ 1)
+/-- Appartenance à la bande fermée [εL, εU]. -/
+def inNouseuxBand (Inorm εL εU : ℝ) : Prop :=
+  εL ≤ Inorm ∧ Inorm ≤ εU
 
-/-- Version 1.04, subtractive definition. -/
-noncomputable def NAI_104 : ℝ := (ISI + IPM + ICM + IAI - IDC + ICI) / 6
+/-- Conditions de bonne formation de la bande. -/
+theorem band_well_formed
+    (hεL0 : 0 < εL)
+    (hεLU : εL < εU)
+    (hεU1 : εU < 1) :
+    εL < εU ∧ 0 < εL ∧ εU < 1 :=
+  ⟨hεLU, hεL0, hεU1⟩
 
-/-- Version 1.05, normalized definition. -/
-noncomputable def NAI_105 : ℝ := (ISI + IPM + ICM + IAI + (1 - IDC) + ICI) / 6
+/-- Exhaustivité : au moins un des trois régimes est satisfait. -/
+theorem regimes_exhaustive
+    (_h0 : 0 ≤ Inorm)
+    (_h1 : Inorm ≤ 1)
+    (_hεL : 0 < εL)
+    (_hεU : εU < 1)
+    (_hεLU : εL < εU) :
+    Inorm < εL ∨
+    (εL ≤ Inorm ∧ Inorm ≤ εU) ∨
+    εU < Inorm := by
+  by_cases hlow : Inorm < εL
+  · exact Or.inl hlow
+  · by_cases hhigh : εU < Inorm
+    · exact Or.inr (Or.inr hhigh)
+    · exact Or.inr
+        (Or.inl ⟨not_lt.mp hlow, not_lt.mp hhigh⟩)
 
-include hISI hIPM hICM hIAI hIDC hICI in
-/-- Theoretical range of NAI_1.04 is [-1/6, 5/6]. -/
-theorem NAI_104_bounds :
-    -1/6 ≤ NAI_104 ISI IPM ICM IAI IDC ICI ∧
-    NAI_104 ISI IPM ICM IAI IDC ICI ≤ 5/6 := by
-  obtain ⟨hISI1, hISI2⟩ := hISI
-  obtain ⟨hIPM1, hIPM2⟩ := hIPM
-  obtain ⟨hICM1, hICM2⟩ := hICM
-  obtain ⟨hIAI1, hIAI2⟩ := hIAI
-  obtain ⟨hIDC1, hIDC2⟩ := hIDC
-  obtain ⟨hICI1, hICI2⟩ := hICI
-  unfold NAI_104
+/-- Exclusivité mutuelle : aucun couple de régimes
+    ne peut être satisfait simultanément. -/
+theorem regimes_mutually_exclusive
+    (hεLU : εL < εU) :
+    (¬ (Inorm < εL ∧
+        (εL ≤ Inorm ∧ Inorm ≤ εU))) ∧
+    (¬ ((εL ≤ Inorm ∧ Inorm ≤ εU) ∧
+        εU < Inorm)) ∧
+    (¬ (Inorm < εL ∧ εU < Inorm)) := by
   constructor
-  · linarith
-  · linarith
+  · rintro ⟨hlow, hband⟩
+    rcases hband with ⟨hLower, hUpper⟩
+    linarith
+  · constructor
+    · rintro ⟨hband, hhigh⟩
+      rcases hband with ⟨hLower, hUpper⟩
+      linarith
+    · rintro ⟨hlow, hhigh⟩
+      linarith
 
-include hISI hIPM hICM hIAI hIDC hICI in
-/-- Theoretical range of NAI_1.05 is [0, 1]. -/
-theorem NAI_105_bounds :
-    0 ≤ NAI_105 ISI IPM ICM IAI IDC ICI ∧
-    NAI_105 ISI IPM ICM IAI IDC ICI ≤ 1 := by
-  obtain ⟨hISI1, hISI2⟩ := hISI
-  obtain ⟨hIPM1, hIPM2⟩ := hIPM
-  obtain ⟨hICM1, hICM2⟩ := hICM
-  obtain ⟨hIAI1, hIAI2⟩ := hIAI
-  obtain ⟨hIDC1, hIDC2⟩ := hIDC
-  obtain ⟨hICI1, hICI2⟩ := hICI
-  unfold NAI_105
-  constructor
-  · linarith
-  · linarith
-
-/-- Exact linear relation between the two scales, before clamping. -/
-theorem NAI_scale_relation :
-    NAI_105 ISI IPM ICM IAI IDC ICI
-      = NAI_104 ISI IPM ICM IAI IDC ICI + 1/6 := by
-  unfold NAI_104 NAI_105
-  ring
-
-end Nouseux
-
+end NouseuxThreshold
