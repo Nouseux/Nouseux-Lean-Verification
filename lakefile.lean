@@ -10,9 +10,7 @@ package nouseux where
 require mathlib from git
   "https://github.com/leanprover-community/mathlib4.git"
 
-require importGraph from git
-  "https://github.com/leanprover-community/import-graph.git" @ "main"
-
 @[default_target]
 lean_lib Nouseux where
   globs := #[.submodules `Nouseux]
+

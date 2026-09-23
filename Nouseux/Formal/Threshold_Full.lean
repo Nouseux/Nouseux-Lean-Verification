@@ -31,17 +31,15 @@ theorem regimes_exhaustive
   · exact Or.inl hlow
   · by_cases hhigh : εU < Inorm
     · exact Or.inr (Or.inr hhigh)
-    · exact Or.inr
-        (Or.inl ⟨not_lt.mp hlow, not_lt.mp hhigh⟩)
+    ·
+      exact Or.inr (Or.inl ⟨not_lt.mp hlow, not_lt.mp hhigh⟩)
 
 /-- Exclusivité mutuelle : aucun couple de régimes
     ne peut être satisfait simultanément. -/
 theorem regimes_mutually_exclusive
     (hεLU : εL < εU) :
-    (¬ (Inorm < εL ∧
-        (εL ≤ Inorm ∧ Inorm ≤ εU))) ∧
-    (¬ ((εL ≤ Inorm ∧ Inorm ≤ εU) ∧
-        εU < Inorm)) ∧
+    (¬ (Inorm < εL ∧ (εL ≤ Inorm ∧ Inorm ≤ εU))) ∧
+    (¬ ((εL ≤ Inorm ∧ Inorm ≤ εU) ∧ εU < Inorm)) ∧
     (¬ (Inorm < εL ∧ εU < Inorm)) := by
   constructor
   · rintro ⟨hlow, hband⟩
