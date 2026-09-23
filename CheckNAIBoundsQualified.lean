@@ -1,0 +1,6 @@
+import Nouseux.Formal.NAI_Bounds_Full
+
+#check NouseuxThreshold.inNouseuxBand
+#check NouseuxThreshold.band_well_formed
+#check NouseuxThreshold.regimes_exhaustive
+#check NouseuxThreshold.regimes_mutually_exclusive

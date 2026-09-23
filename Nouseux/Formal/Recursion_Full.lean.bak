@@ -1,7 +1,4 @@
-import Mathlib.Basic.Real.Basic
-import Mathlib.Tactic.Linarith
-import Mathlib.Tactic.Ring
-import Mathlib.Tactic.NormNum
+import Mathlib.Tactic
 
 namespace NouseuxRecursion
 
