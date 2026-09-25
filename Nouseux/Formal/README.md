@@ -38,7 +38,8 @@ theorem threshold_iff (I_norm Ω_min Ω_max : ℝ) :
 
 **Theorem:** `N_next_bounded`
 
-**Proves the boundedness of the recursive update operator**
+Proves the boundedness of the recursive update operator:
+
 $$
 N(t+1) = (1-\mu)\cdot N(t) + \eta\cdot 1[\text{InBand}] \cdot P(t)\cdot \|O(t)\|
 $$
@@ -53,6 +54,9 @@ theorem N_next_bounded
     0 ≤ N_next N P Onorm μ η inBand ∧
     N_next N P Onorm μ η inBand ≤ 1
 ```
+
+**Note on notation**
+- `Onorm` corresponds to `‖O(t)‖`.
 
 **Proof strategy**
 - Case 1 (`inBand = false`): `N(t+1) = (1-μ)·N(t)`, bounded by `[0, 1-μ] ⊆ [0, 1]`
@@ -80,6 +84,7 @@ theorem N_next_bounded
 ---
 
 ### 🚀 Building the Proofs
+
 ```bash
 # Install Lean 4.35.0-rc2
 curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh
@@ -95,8 +100,13 @@ lake update
 lake build Nouseux
 ```
 
+---
+
 ### 📚 References
 - Nouseux V1.04ter Specification — Section 9: Recursive Operator
 - Lean 4 Documentation — https://lean-lang.org/
 - Mathlib4 — https://github.com/leanprover-community/mathlib4
+
+
+
 
