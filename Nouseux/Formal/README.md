@@ -15,8 +15,7 @@ This folder contains the **complete mathematical proofs** for the Nouseux model 
 theorem NAI_1_05_bounds (μ η : ℝ) (hμ : 0 ≤ μ ∧ μ ≤ 1) (hη : 0 ≤ η ∧ η ≤ μ) :
     0 ≤ NAI_1_05 μ η ∧ NAI_1_05 μ η ≤ 1
 ```
-
-**Status:** ✅ DEPLOYED — Fully verified with `nlinarith` tactic
+**Status:** ✅ Verified ... — Fully verified with `nlinarith` tactic
 
 ---
 
@@ -30,8 +29,7 @@ Proves that the threshold function correctly implements band-pass filtering:
 theorem threshold_iff (I_norm Ω_min Ω_max : ℝ) :
     threshold I_norm Ω_min Ω_max = true ↔ Ω_min ≤ I_norm ∧ I_norm ≤ Ω_max
 ```
-
-**Status:** ✅ DEPLOYED — Fully verified with boolean decidability
+**Status:** ✅ Verified ...— Fully verified with boolean decidability
 
 ---
 
@@ -60,7 +58,7 @@ theorem N_next_bounded
 - **Case 1** (`inBand = false`): N(t+1) = (1-μ)·N(t), bounded by [0, 1-μ] ⊆ [0, 1]
 - **Case 2** (`inBand = true`): N(t+1) = (1-μ)·N(t) + η·P·‖O‖ ≤ (1-μ) + η ≤ 1 (since η ≤ μ)
 
-**Status:** ✅ DEPLOYED — Fully proved with case analysis and `nlinarith` tactic
+**Status:** ✅ Verified ... — Fully proved with case analysis and `nlinarith` tactic
 
 ---
 
