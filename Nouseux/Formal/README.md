@@ -39,7 +39,6 @@ theorem threshold_iff (I_norm Ω_min Ω_max : ℝ) :
 **Theorem:** `N_next_bounded`
 
 Proves the boundedness of the recursive update operator:
-
 $$
 N(t+1) = (1-\mu)\cdot N(t) + \eta\cdot 1[\text{InBand}] \cdot P(t)\cdot \|O(t)\|
 $$
@@ -106,7 +105,3 @@ lake build Nouseux
 - Nouseux V1.04ter Specification — Section 9: Recursive Operator
 - Lean 4 Documentation — https://lean-lang.org/
 - Mathlib4 — https://github.com/leanprover-community/mathlib4
-
-
-
-
