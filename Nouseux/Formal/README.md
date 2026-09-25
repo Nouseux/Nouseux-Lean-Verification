@@ -1,48 +1,49 @@
-# Formal Proofs — V1.04ter Rigorous Structure
+## Formal Proofs — V1.04ter Rigorous Structure
 
 This folder contains the **complete mathematical proofs** for the Nouseux model (Version 1.04ter), formally verified in Lean 4.
 
 ## 📂 Files
 
-### ✅ **`NAI_Bounds_Full.lean`** — Certified proofs for NAI bounds
+### ✅ `NAI_Bounds_Full.lean` — Certified proofs for NAI bounds
 
 **Theorems:**
-- `NAI_1_04_bounds`: Proves NAI_1.04 ∈ [-1/6, 5/6]
-- `NAI_1_05_bounds`: Proves NAI_1.05 ∈ [0, 1]
+- `NAI_1_04_bounds`: Proves `NAI_1.04 ∈ [-1/6, 5/6]`
+- `NAI_1_05_bounds`: Proves `NAI_1.05 ∈ [0, 1]`
 
 **Mathematical statement:**
 ```lean
 theorem NAI_1_05_bounds (μ η : ℝ) (hμ : 0 ≤ μ ∧ μ ≤ 1) (hη : 0 ≤ η ∧ η ≤ μ) :
     0 ≤ NAI_1_05 μ η ∧ NAI_1_05 μ η ≤ 1
 ```
-**Status:** ✅ Verified ... — Fully verified with `nlinarith` tactic
+
+**Status:** ✅ Verified — Fully verified with `nlinarith` tactic
 
 ---
 
-### ✅ **`Threshold_Full.lean`** — Formal proof of regime activation thresholds
+### ✅ `Threshold_Full.lean` — Formal proof of regime activation thresholds
 
 **Theorem:** `threshold_iff`
 
 Proves that the threshold function correctly implements band-pass filtering:
-
 ```lean
 theorem threshold_iff (I_norm Ω_min Ω_max : ℝ) :
     threshold I_norm Ω_min Ω_max = true ↔ Ω_min ≤ I_norm ∧ I_norm ≤ Ω_max
 ```
-**Status:** ✅ Verified ...— Fully verified with boolean decidability
+
+**Status:** ✅ Verified — Fully verified with boolean decidability
 
 ---
 
-### ✅ **`Recursion_Full.lean`** — Complete stability analysis of the recursive operator N(t+1)
+### ✅ `Recursion_Full.lean` — Complete stability analysis of the recursive operator `N(t+1)`
 
 **Theorem:** `N_next_bounded`
 
 Proves the boundedness of the recursive update operator:
-
-$$N(t+1) = (1-μ)·N(t) + η·1[I_{norm} ∈ Ω_N]·P(t)·∥O(t)∥$$
+$$
+N(t+1) = (1-μ)\cdot N(t) + η\cdot 1[\text{InBand}] \cdot P(t)\cdot \|O(t)\|
+$$
 
 **Mathematical statement:**
-
 ```lean
 theorem N_next_bounded
     (hN : 0 ≤ N ∧ N ≤ 1)
@@ -54,31 +55,30 @@ theorem N_next_bounded
 ```
 
 **Proof strategy:**
+- **Case 1** (`inBand = false`): `N(t+1) = (1-μ)·N(t)`, bounded by `[0, 1-μ] ⊆ [0, 1]`
+- **Case 2** (`inBand = true`):  
+  `N(t+1) = (1-μ)·N(t) + η·P·‖O‖`  
+  and using bounds `0 ≤ N,P,‖O‖ ≤ 1` plus `η ≤ μ`, obtain `N(t+1) ≤ (1-μ) + η ≤ 1`
 
-- **Case 1** (`inBand = false`): N(t+1) = (1-μ)·N(t), bounded by [0, 1-μ] ⊆ [0, 1]
-- **Case 2** (`inBand = true`): N(t+1) = (1-μ)·N(t) + η·P·‖O‖ ≤ (1-μ) + η ≤ 1 (since η ≤ μ)
-
-**Status:** ✅ Verified ... — Fully proved with case analysis and `nlinarith` tactic
+**Status:** ✅ Verified — Fully proved with case analysis and `nlinarith` tactic
 
 ---
 
 ## 🎯 Mathematical Guarantees
 
-✅ **Stability**: NAI never diverges or produces invalid values
-
-✅ **Correctness**: Threshold function implements exact band-pass logic
-
-✅ **Boundedness**: Recursive updates preserve the [0,1] constraint
+✅ **Stability:** NAI never diverges or produces invalid values  
+✅ **Correctness:** Threshold function implements exact band-pass logic  
+✅ **Boundedness:** Recursive updates preserve the `[0,1]` constraint  
 
 ---
 
 ## 🔬 Verification Status
 
-| File                    | Status       | Verification Method          |
-|-------------------------|--------------|------------------------------|
-| `NAI_Bounds_Full.lean`  | ✅ Verified  | `nlinarith` tactic           |
-| `Threshold_Full.lean`   | ✅ Verified  | Boolean decidability         |
-| `Recursion_Full.lean`   | ✅ Verified  | Case analysis + `nlinarith`  |
+| File | Status | Verification Method |
+|---|---|---|
+| `NAI_Bounds_Full.lean` | ✅ Verified | `nlinarith` tactic |
+| `Threshold_Full.lean` | ✅ Verified | Boolean decidability |
+| `Recursion_Full.lean` | ✅ Verified | Case analysis + `nlinarith` |
 
 ---
 
