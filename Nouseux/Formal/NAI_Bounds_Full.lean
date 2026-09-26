@@ -97,4 +97,58 @@ theorem NAI_105_upper_bound_tight : ∃ (ISI IPM ICM IAI IDC ICI : ℝ),
   unfold NAI_105
   norm_num
 
+
+/-- Exact linear relation between the two scales, before clamping. -/
+theorem NAI_scale_relation :
+    NAI_105 ISI IPM ICM IAI IDC ICI
+      = NAI_104 ISI IPM ICM IAI IDC ICI + 1/6 := by
+  unfold NAI_104 NAI_105
+  ring
+
+
+/-- Tightness of NAI_104 lower bound: the value -1/6 is exactly reachable. -/
+theorem NAI_104_lower_bound_tight : ∃ (ISI IPM ICM IAI IDC ICI : ℝ),
+    (0 ≤ ISI ∧ ISI ≤ 1) ∧ (0 ≤ IPM ∧ IPM ≤ 1) ∧
+    (0 ≤ ICM ∧ ICM ≤ 1) ∧ (0 ≤ IAI ∧ IAI ≤ 1) ∧
+    (0 ≤ IDC ∧ IDC ≤ 1) ∧ (0 ≤ ICI ∧ ICI ≤ 1) ∧
+    NAI_104 ISI IPM ICM IAI IDC ICI = -1/6 := by
+  use 0, 0, 0, 0, 1, 0
+  refine ⟨by norm_num, by norm_num, by norm_num, by norm_num, by norm_num, by norm_num, ?_⟩
+  unfold NAI_104
+  norm_num
+
+/-- Tightness of NAI_104 upper bound: the value 5/6 is exactly reachable. -/
+theorem NAI_104_upper_bound_tight : ∃ (ISI IPM ICM IAI IDC ICI : ℝ),
+    (0 ≤ ISI ∧ ISI ≤ 1) ∧ (0 ≤ IPM ∧ IPM ≤ 1) ∧
+    (0 ≤ ICM ∧ ICM ≤ 1) ∧ (0 ≤ IAI ∧ IAI ≤ 1) ∧
+    (0 ≤ IDC ∧ IDC ≤ 1) ∧ (0 ≤ ICI ∧ ICI ≤ 1) ∧
+    NAI_104 ISI IPM ICM IAI IDC ICI = 5/6 := by
+  use 1, 1, 1, 1, 0, 1
+  refine ⟨by norm_num, by norm_num, by norm_num, by norm_num, by norm_num, by norm_num, ?_⟩
+  unfold NAI_104
+  norm_num
+
+
+/-- Tightness of NAI_105 lower bound: the value 0 is exactly reachable. -/
+theorem NAI_105_lower_bound_tight : ∃ (ISI IPM ICM IAI IDC ICI : ℝ),
+    (0 ≤ ISI ∧ ISI ≤ 1) ∧ (0 ≤ IPM ∧ IPM ≤ 1) ∧
+    (0 ≤ ICM ∧ ICM ≤ 1) ∧ (0 ≤ IAI ∧ IAI ≤ 1) ∧
+    (0 ≤ IDC ∧ IDC ≤ 1) ∧ (0 ≤ ICI ∧ ICI ≤ 1) ∧
+    NAI_105 ISI IPM ICM IAI IDC ICI = 0 := by
+  use 0, 0, 0, 0, 1, 0
+  refine ⟨by norm_num, by norm_num, by norm_num, by norm_num, by norm_num, by norm_num, ?_⟩
+  unfold NAI_105
+  norm_num
+
+/-- Tightness of NAI_105 upper bound: the value 1 is exactly reachable. -/
+theorem NAI_105_upper_bound_tight : ∃ (ISI IPM ICM IAI IDC ICI : ℝ),
+    (0 ≤ ISI ∧ ISI ≤ 1) ∧ (0 ≤ IPM ∧ IPM ≤ 1) ∧
+    (0 ≤ ICM ∧ ICM ≤ 1) ∧ (0 ≤ IAI ∧ IAI ≤ 1) ∧
+    (0 ≤ IDC ∧ IDC ≤ 1) ∧ (0 ≤ ICI ∧ ICI ≤ 1) ∧
+    NAI_105 ISI IPM ICM IAI IDC ICI = 1 := by
+  use 1, 1, 1, 1, 0, 1
+  refine ⟨by norm_num, by norm_num, by norm_num, by norm_num, by norm_num, by norm_num, ?_⟩
+  unfold NAI_105
+  norm_num
+
 end Nouseux
