@@ -23,7 +23,7 @@ theorem N_fixedPoint_bounded
   obtain ⟨hP0, hP1⟩ := hP
   obtain ⟨hO0, hO1⟩ := hO
   unfold N_fixedPoint
-  rw [ite_eq_right (ne_of_gt hμ0)]
+  rw [if_neg (ne_of_gt hμ0)]
   constructor
   · apply div_nonneg
     · exact mul_nonneg (mul_nonneg hη0 hP0) hO0
