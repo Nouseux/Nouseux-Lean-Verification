@@ -10,7 +10,7 @@ theorem N_fixedPoint_is_fixed
     N_next (N_fixedPoint P Onorm μ η) P Onorm μ η true =
       N_fixedPoint P Onorm μ η := by
   unfold N_next N_fixedPoint indicator
-  simp only [ite_eq_right hμ, ite_true]
+  rw [if_neg hμ]
   field_simp
   ring
 
@@ -39,7 +39,7 @@ theorem N_next_converges_to_fixedPoint
     N_next N P Onorm μ η true - N_fixedPoint P Onorm μ η =
       (1 - μ) * (N - N_fixedPoint P Onorm μ η) := by
   unfold N_next N_fixedPoint indicator
-  simp only [ite_eq_right hμ, ite_true]
+  rw [if_neg hμ]
   field_simp
   ring
 

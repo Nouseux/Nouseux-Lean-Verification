@@ -1,5 +1,5 @@
 import Mathlib.Tactic.Linarith
-import Mathlib.Basic.Real.Basic
+import Mathlib.Tactic
 
 namespace NouseuxThreshold
 
