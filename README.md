@@ -1,4 +1,5 @@
 # Formal Proofs — V5.2.1 Rigorous Structure
+[![Lean Build](https://github.com/Nouseux/Nouseux-Lean-Verification/actions/workflows/lean-build.yml/badge.svg)](https://github.com/Nouseux/Nouseux-Lean-Verification/actions/workflows/lean-build.yml)
 
 This folder contains the complete mathematical proofs for the **Nouseux model (Version 5.2.1)**, formally verified in **Lean 4** with **Mathlib4**.
 
