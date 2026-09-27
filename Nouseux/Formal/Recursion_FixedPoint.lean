@@ -1,4 +1,4 @@
-import Nouseux.Formal.Recursion_Core
+import Nouseux.Formal.Recursion_Full
 
 namespace NouseuxRecursion
 
