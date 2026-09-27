@@ -12,5 +12,6 @@ require mathlib from git
 
 @[default_target]
 lean_lib Nouseux where
-  globs := #[.submodules `Nouseux]
-
+  globs := #[
+    .submodules `Nouseux.Formal
+  ]
