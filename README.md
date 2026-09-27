@@ -83,7 +83,7 @@ lake build
 ```
 
 Le compilateur doit afficher un succès complet sans erreur :
-\`Build completed successfully (3109 jobs).\`
+`Build completed successfully (3109 jobs).`
 
 ---
 
