@@ -1,4 +1,4 @@
-# Nouseux : Vérification Formelle de la Cohérence Cognitive et Affective (v5.0)
+# Nouseux : Vérification Formelle de la Cohérence Cognitive et Affective (v5.1)
 
 Ce dépôt contient la spécification et la vérification formelle en **Lean 4** (avec **Mathlib**) du noyau récursif du modèle **Nouseux**. 
 
@@ -10,7 +10,8 @@ Le projet formalise et prouve mathématiquement les propriétés de stabilité, 
 
 Le modèle décrit l'évolution d'une variable d'état cognitif $$N(t) \in [0, 1]$$ (représentant par exemple une intensité d'adhésion ou une norme intégrée) selon l'équation de récurrence suivante :
 
-$$N(t+1) = N(t) + 	ext{indicator}(	ext{inBand}) \cdot \left( \eta \cdot P \cdot O_{	ext{norm}} - \mu \cdot N(t) ight)$$
+$$N(t+1) = N(t) + 	ext{indicator}(	ext{inBand}) \cdot \left( \eta \cdot P \cdot O_{	ext{norm}} - \mu \cdot N(t) 
+ight)$$
 
 Où :
 - $$P \in [0, 1]$$ représente la **Pression**.
