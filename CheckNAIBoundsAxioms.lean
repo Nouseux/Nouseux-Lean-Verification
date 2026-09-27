@@ -1,5 +1,10 @@
-import Nouseux.Formal.Threshold_Full
+import Nouseux.Formal.NAI_Bounds_Full
 
-#print axioms NouseuxThreshold.band_well_formed
-#print axioms NouseuxThreshold.regimes_exhaustive
-#print axioms NouseuxThreshold.regimes_mutually_exclusive
+#check @NAI_104_bounds
+#check @NAI_105_bounds
+#check @NAI_104_lower_bound_tight
+#check @NAI_104_upper_bound_tight
+#check @NAI_105_lower_bound_tight
+#check @NAI_105_upper_bound_tight
+#check @NAI_104_mono_ISI
+#check @NAI_105_mono_ISI

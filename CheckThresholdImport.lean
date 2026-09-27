@@ -1,2 +1,6 @@
 import Nouseux.Formal.Threshold_Full
-#check _
+
+#check @inNouseuxBand
+#check @band_well_formed
+#check @regimes_exhaustive
+#check @regimes_mutually_exclusive
