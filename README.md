@@ -62,27 +62,20 @@ Le noyau formel est composé de **26 théorèmes validés** (zéro `sorry`) rép
    ```bash
    git clone https://github.com/votre-utilisateur/Nouseux-Lean-Verification.git
    cd Nouseux-Lean-Verification
-   ```
+Récupérer le cache de Mathlib4 (évite de recompiler l'intégralité de la bibliothèque standard) :
 
-2. **Récupérer le cache de Mathlib4** (évite de recompiler l'intégralité de la bibliothèque standard) :
-   ```bash
-   lake exe cache get
-   ```
+Copier
+lake exe cache get
+Compiler l'intégralité du projet :
 
-3. **Compiler l'intégralité du projet** :
-   ```bash
-   lake build
-   ```
-
+Copier
+lake build
 Le compilateur doit afficher un succès complet sans erreur :
-`Build completed successfully (3109 jobs).`
+Build completed successfully (3109 jobs).
 
----
-
-## 🔍 Extraits des Théorèmes Clés (Lean 4)
-
-### Invariance des Bornes (`N_next_bounded`)
-```lean
+🔍 Extraits des Théorèmes Clés (Lean 4)
+Invariance des Bornes (N_next_bounded)
+Copier
 theorem N_next_bounded
     (N P Onorm μ η : ℝ) (inBand : Bool)
     (hN : 0 ≤ N ∧ N ≤ 1)
@@ -90,32 +83,22 @@ theorem N_next_bounded
     (hO : 0 ≤ Onorm ∧ Onorm ≤ 1)
     (hη0 : 0 ≤ η) (hημ : η ≤ μ) (hμ1 : μ ≤ 1) (hμ0 : 0 ≤ μ) :
     0 ≤ N_next N P Onorm μ η inBand ∧ N_next N P Onorm μ η inBand ≤ 1
-```
-
-### Attractivité et Contraction du Point Fixe (`N_fixed_point_attractor`)
-```lean
+Attractivité et Contraction du Point Fixe (N_fixed_point_attractor)
+Copier
 theorem N_fixed_point_attractor
     (N P Onorm μ η : ℝ) (hμ : μ ≠ 0) :
     N_next N P Onorm μ η true - (η * P * Onorm / μ) =
     (1 - μ) * (N - (η * P * Onorm / μ))
-```
-
-### Bornes de l'Indice Composite NAI (`NAI_104_bounds`)
-```lean
+Bornes de l'Indice Composite NAI (NAI_104_bounds)
+Copier
 theorem NAI_104_bounds (ISI IPM ICM IAI IDC ICI : ℝ)
     (h1 : 0 ≤ ISI ∧ ISI ≤ 1) (h2 : 0 ≤ IPM ∧ IPM ≤ 1)
     (h3 : 0 ≤ ICM ∧ ICM ≤ 1) (h4 : 0 ≤ IAI ∧ IAI ≤ 1)
     (h5 : 0 ≤ IDC ∧ IDC ≤ 1) (h6 : 0 ≤ ICI ∧ ICI ≤ 1) :
     -1/6 ≤ NAI_104 ISI IPM ICM IAI IDC ICI ∧ NAI_104 ISI IPM ICM IAI IDC ICI ≤ 5/6
-```
+🎓 Originalité Scientifique et Contribution
+Le projet Nouseux se distingue des travaux traditionnels en méthodes formelles par :
 
----
-
-## 🎓 Originalité Scientifique et Contribution
-
-Le projet **Nouseux** se distingue des travaux traditionnels en méthodes formelles par :
-- **La formalisation de l'habitabilité relationnelle** : Contrairement aux systèmes cyber-physiques classiques (qui cherchent souvent à maximiser ou minimiser une variable), ce modèle prouve la stabilité d'un système au sein d'une bande intermédiaire métastable, évitant à la fois la dissociation (découplage) et la fusion (sur-couplage coercitif).
-- **Un pont rigoureux entre phénoménologie et calcul mécanique** : Traduction formelle complète de concepts issus des sciences cognitives et de l'interaction humaine en théorèmes mathématiques vérifiés par ordinateur.
-
----
-*Projet développé et vérifié formellement avec Lean 4 et Mathlib4.*
+La formalisation de l'habitabilité relationnelle : Contrairement aux systèmes cyber-physiques classiques (qui cherchent souvent à maximiser ou minimiser une variable), ce modèle prouve la stabilité d'un système au sein d'une bande intermédiaire métastable, évitant à la fois la dissociation (découplage) et la fusion (sur-couplage coercitif).
+Un pont rigoureux entre phénoménologie et calcul mécanique : Traduction formelle complète de concepts issus des sciences cognitives et de l'interaction humaine en théorèmes mathématiques vérifiés par ordinateur.
+Projet développé et vérifié formellement avec Lean 4 et Mathlib4.
