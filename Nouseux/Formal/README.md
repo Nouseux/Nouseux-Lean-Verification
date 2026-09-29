@@ -38,14 +38,15 @@ It contains **three theorems**:
 
 **Limitation:** The reviewed file does not contain `threshold_iff` and does not prove that a Boolean threshold function computes `inNouseuxBand`. The latter is a proposition (`Prop`), not a Boolean function.
 
-### ✅ `Recursion_Full.lean` — One-step boundedness
+### ✅ `Recursion_Full.lean` — One-step boundedness of the recursive operator
 
 **Theorem:** `N_next_bounded`
 
-The recursive update has two branches:
+The update uses a Boolean input `inBand` and has two branches:
 
-- If `inBand = false`, the next state is `(1 - μ) * N`.
-- If `inBand = true`, the next state is `(1 - μ) * N + η * P * Onorm`.
+- If `inBand = false`: `N_next = (1 - μ) * N`.
+- If `inBand = true`: `N_next = (1 - μ) * N + η * P * Onorm`.
+
 
 Under the theorem's hypotheses, including `N`, `P` and `Onorm` in `[0, 1]` and `0 ≤ η ≤ μ ≤ 1`, the next state lies in `[0, 1]`.
 
