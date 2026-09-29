@@ -1,91 +1,154 @@
-## Formal Proofs — V1.04ter Rigorous Structure
+Formal Proofs — V1.04ter Rigorous Structure
+This folder contains Lean 4 proofs of selected mathematical properties of the Nouseux model (Version 1.04ter). The guarantees below are conditional on the hypotheses stated in the corresponding theorems; they are not a complete formal verification of the model.
 
-This folder contains the **complete mathematical proofs** for the Nouseux model (Version 1.04ter), formally verified in Lean 4.
+📂 Files
+✅ NAI_Bounds_Full.lean — Bounds and related properties of NAI
+Theorems include:
 
-## 📂 Files
+NAI_1_04_bounds: Bounds the corresponding NAI definition.
+NAI_1_05_bounds: Establishes a value in [0, 1] under its stated parameter hypotheses.
+Mathematical statement:
 
-### ✅ `NAI_Bounds_Full.lean` — Certified proofs for NAI bounds
-
-**Theorems:**
-- `NAI_1_04_bounds`: Proves `NAI_1.04 ∈ [-1/6, 5/6]`
-- `NAI_1_05_bounds`: Proves `NAI_1.05 ∈ [0, 1]`
-
-**Mathematical statement:**
-```lean
 theorem NAI_1_05_bounds (μ η : ℝ) (hμ : 0 ≤ μ ∧ μ ≤ 1) (hη : 0 ≤ η ∧ η ≤ μ) :
     0 ≤ NAI_1_05 μ η ∧ NAI_1_05 μ η ≤ 1
-```
+The reviewed text contains 19 theorems in this file. Consult the Lean statements for the exact hypotheses and conclusions of each result. Monotonicity stated using ≤ is non-strict.
 
-**Status:** ✅ Verified — Fully verified with `nlinarith` tactic
+✅ Threshold_Full.lean — Partition into three regimes
+This file defines membership in a closed band:
 
----
+def inNouseuxBand (Inorm εL εU : ℝ) : Prop :=
+  εL ≤ Inorm ∧ Inorm ≤ εU
+It contains three theorems:
 
-### ✅ `Threshold_Full.lean` — Formal proof of regime activation thresholds
+band_well_formed: Restates the supplied conditions on the band boundaries.
+regimes_exhaustive: Every real value is below the band, inside the closed band, or above the band.
+regimes_mutually_exclusive: If εL < εU, no two of these regimes hold simultaneously.
+Important limitation: The reviewed file does not contain a theorem named threshold_iff or prove that a Boolean threshold function computes inNouseuxBand. The latter is a proposition (Prop), not a Boolean function.
 
-**Theorem:** `threshold_iff`
+✅ Recursion_Full.lean — One-step boundedness of the recursive operator
+Theorem: N_next_bounded
 
-Proves that the threshold function correctly implements band-pass filtering:
-```lean
-theorem threshold_iff (I_norm Ω_min Ω_max : ℝ) :
-    threshold I_norm Ω_min Ω_max = true ↔ Ω_min ≤ I_norm ∧ I_norm ≤ Ω_max
-```
+The update uses a Boolean input inBand. In mathematical notation, its two branches are:
 
-**Status:** ✅ Verified — Fully verified with boolean decidability
+N
+t
++
+1
+=
+{
+(
+1
+−
+μ
+)
+N
+t
++
+η
+P
+t
+ 
+O
+n
+o
+r
+m
+t
+,
+if ‘inBand = true‘,
+(
+1
+−
+μ
+)
+N
+t
+,
+if ‘inBand = false‘.
+N 
+t+1
+​
+ ={ 
+(1−μ)N 
+t
+​
+ +ηP 
+t
+​
+ Onorm 
+t
+​
+ ,
+(1−μ)N 
+t
+​
+ ,
+​
+  
+if ‘inBand = true‘,
+if ‘inBand = false‘.
+​
+ 
+Theorem conclusion, with its essential hypotheses:
 
----
+-- Assuming N, P and Onorm lie in [0, 1],
+-- and 0 ≤ η, η ≤ μ, μ ≤ 1:
+0 ≤ N_next N P Onorm μ η inBand ∧
+  N_next N P Onorm μ η inBand ≤ 1
+This excerpt summarizes the result; consult Recursion_Full.lean for the complete Lean declaration.
 
-### ✅ `Recursion_Full.lean` — Complete stability analysis of the recursive operator `N(t+1)`
+Proof strategy:
 
-**Theorem:** `N_next_bounded`
+Case 1 (inBand = false): The next state is (1-μ) * N, which lies in [0, 1].
+Case 2 (inBand = true): The additional term is non-negative and at most η. Since η ≤ μ, the next state is at most (1-μ) + η ≤ 1.
+The theorem establishes one-step boundedness, not convergence. The proof assumes that Onorm is in [0, 1]; it does not establish that this input is the norm of another quantity.
 
-Proves the boundedness of the recursive update operator:
-$$
-N(t+1) = (1-μ)\cdot N(t) + η\cdot 1[\text{InBand}] \cdot P(t)\cdot \|O(t)\|
-$$
+✅ Recursion_Invariance.lean — Boundedness of the full sequence
+Theorem: Nseq_bounded
 
-**Mathematical statement:**
-```lean
-theorem N_next_bounded
-    (hN : 0 ≤ N ∧ N ≤ 1)
-    (hP : 0 ≤ P ∧ P ≤ 1)
-    (hO : 0 ≤ Onorm ∧ Onorm ≤ 1)
-    (hη0 : 0 ≤ η) (hημ : η ≤ μ) (hμ1 : μ ≤ 1) :
-    0 ≤ N_next N P Onorm μ η inBand ∧
-    N_next N P Onorm μ η inBand ≤ 1
-```
+If the initial state lies in [0, 1], both input sequences take values in [0, 1] at every step, and 0 ≤ η ≤ μ ≤ 1, then every state of Nseq lies in [0, 1]. This holds for any Boolean sequence inBand.
 
-**Proof strategy:**
-- **Case 1** (`inBand = false`): `N(t+1) = (1-μ)·N(t)`, bounded by `[0, 1-μ] ⊆ [0, 1]`
-- **Case 2** (`inBand = true`):  
-  `N(t+1) = (1-μ)·N(t) + η·P·‖O‖`  
-  and using bounds `0 ≤ N,P,‖O‖ ≤ 1` plus `η ≤ μ`, obtain `N(t+1) ≤ (1-μ) + η ≤ 1`
+This is an invariance result. It does not assert that the sequence converges.
 
-**Status:** ✅ Verified — Fully proved with case analysis and `nlinarith` tactic
+✅ Recursion_Monotonicity.lean — One-step, non-strict monotonicity
+The file proves three results for the branch inBand = true:
 
----
+N_next_mono_P: Non-strict monotonicity in P.
+N_next_mono_O: Non-strict monotonicity in Onorm.
+N_next_mono_η: Non-strict monotonicity in η.
+Each result has the non-negativity hypotheses stated in its Lean declaration. These results do not say that a trajectory increases over time.
 
-## 🎯 Mathematical Guarantees
+✅ Recursion_FixedPoint.lean — Fixed-point identities
+This file contains two theorems concerning a fixed point and the difference between an updated state and that fixed point, under the conditions specified in the file.
 
-✅ **Stability:** NAI never diverges or produces invalid values  
-✅ **Correctness:** Threshold function implements exact band-pass logic  
-✅ **Boundedness:** Recursive updates preserve the `[0,1]` constraint  
+An algebraic identity for this difference must not be described as a formally proved convergence or strict-contraction theorem unless those conclusions are also stated and proved separately.
 
----
+🎯 Mathematical Guarantees
+✅ NAI bounds: Bounds established under the hypotheses of the corresponding theorems.
 
-## 🔬 Verification Status
+✅ Regime partition: The three real-valued regimes are exhaustive and, for ordered boundaries, mutually exclusive.
 
-| File | Status | Verification Method |
-|---|---|---|
-| `NAI_Bounds_Full.lean` | ✅ Verified | `nlinarith` tactic |
-| `Threshold_Full.lean` | ✅ Verified | Boolean decidability |
-| `Recursion_Full.lean` | ✅ Verified | Case analysis + `nlinarith` |
+✅ Recursive boundedness: A single update preserves [0, 1] under the required hypotheses.
 
----
+✅ Sequence invariance: The full recursive sequence remains in [0, 1] when those hypotheses hold at every step.
 
-## 🚀 Building the Proofs
+Not established by these files: A Boolean implementation of band membership, convergence of a general time-varying trajectory, or empirical validity of the model.
 
-```bash
-# Install Lean 4.35.0-rc2
+🔬 Verification Status
+File	Theorems in the reviewed text	Proved scope
+NAI_Bounds_Full.lean	19	NAI bounds and related properties
+Threshold_Full.lean	3	Conditions and partition of regimes
+Recursion_Full.lean	1	One-step boundedness
+Recursion_Invariance.lean	1	Sequence invariance
+Recursion_Monotonicity.lean	3	Non-strict, one-step monotonicity
+Recursion_FixedPoint.lean	2	Fixed-point results
+Total for these six reviewed files	29	
+This count should be checked against the exact repository revision before being attributed to a release or commit. A successful build confirms compilation; checking unwanted axiom dependencies requires additional inspection, for example with #print axioms.
+
+🚀 Building the Proofs
+Use the Lean version specified in the repository's lean-toolchain file.
+
+# Install elan, the Lean toolchain manager
 curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh
 
 # Clone the repository
@@ -95,14 +158,9 @@ cd Nouseux-Lean-Verification
 # Update dependencies
 lake update
 
-# Build (requires ~30-60 minutes for mathlib compilation)
+# Build
 lake build Nouseux
-```
-
----
-
-## 📚 References
-
-- **Nouseux V1.04ter Specification** — Section 9: Recursive Operator
-- **Lean 4 Documentation** — https://lean-lang.org/
-- **Mathlib4** — https://github.com/leanprover-community/mathlib4
+📚 References
+Nouseux V1.04ter Specification — Section 9: Recursive Operator
+Lean 4 Documentation — https://lean-lang.org/
+Mathlib4 — https://github.com/leanprover-community/mathlib4
