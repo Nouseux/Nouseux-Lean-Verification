@@ -63,7 +63,6 @@ This is an **invariance** result, not a convergence theorem.
 ### ✅ `Recursion_Monotonicity.lean` — Non-strict monotonicity
 
 This file contains three one-step monotonicity theorems for the branch `inBand = true`:
-
 - `N_next_mono_P`: Monotonicity in `P`.
 - `N_next_mono_O`: Monotonicity in `Onorm`.
 - `N_next_mono_η`: Monotonicity in `η`.
@@ -97,7 +96,7 @@ These results should not be described as a general convergence or strict-contrac
 | `Recursion_FixedPoint.lean` | 2 | Fixed-point results |
 | **Total for these six reviewed files** | **29** | |
 
-The theorem count should be checked against the exact repository revision. A successful build confirms compilation; checking unwanted axiom dependencies requires additional inspection, for example with `#print axioms`.
+The theorem count should be checked against the exact repository revision. A successful build of the exact repository revision confirms that its Lean files compile; checking unwanted axiom dependencies requires additional inspection, for example with `#print axioms`.
 
 ## 🚀 Building the Proofs
 
