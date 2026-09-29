@@ -1,41 +1,70 @@
-# Formal Proofs — V5.2.1 Rigorous Structure
-[![Lean Build](https://github.com/Nouseux/Nouseux-Lean-Verification/actions/workflows/lean-build.yml/badge.svg)](https://github.com/Nouseux/Nouseux-Lean-Verification/actions/workflows/lean-build.yml)
+# Nouseux V1.04ter — Lean 4 Formal Verification
 
-This folder contains the complete mathematical proofs for the **Nouseux model (Version 5.2.1)**, formally verified in **Lean 4** with **Mathlib4**.
+[![Lean build](https://img.shields.io/badge/Lean-build%20verified-brightgreen)](../../actions)
 
-**Total: 26 verified theorems, zero `sorry`.**
+This repository contains a Lean 4 formalisation of selected mathematical properties of the Nouseux model, Version 1.04ter, using Mathlib.
 
----
+The formalisation provides **29 theorems across six reviewed Lean files**, with no `sorry` or `admit` in those files. These results are conditional on the hypotheses stated in each theorem and do not constitute a complete formal verification or empirical validation of the model.
 
-## 📂 Files Overview
+## Verified scope
 
-| File | Theorems | Status |
-|---|---|---|
-| `NAI_Bounds_Full.lean` | 14 (bounds + 12 monotonicity lemmas) | ✅ Verified |
-| `Threshold_Full.lean` | 3 (regime partition) | ✅ Verified |
-| `Recursion_Full.lean` | 1 (boundedness) | ✅ Verified |
-| `Recursion_Invariance.lean` | 2 (global sequence stability) | ✅ Verified |
-| `Recursion_Monotonicity.lean` | 4 (operator monotonicity) | ✅ Verified |
-| `Recursion_FixedPoint.lean` | 2 (fixed point + contraction) | ✅ Verified |
+| File | Theorems | Proved scope |
+|---|---:|---|
+| `NAI_Bounds_Full.lean` | 19 | NAI bounds and related properties |
+| `Threshold_Full.lean` | 3 | Conditions and partition of three regimes |
+| `Recursion_Full.lean` | 1 | One-step boundedness |
+| `Recursion_Invariance.lean` | 1 | Invariance of the recursive sequence |
+| `Recursion_Monotonicity.lean` | 3 | Non-strict, one-step monotonicity |
+| `Recursion_FixedPoint.lean` | 2 | Fixed-point results |
+| **Total** | **29** | |
 
----
+## Scope limitations
 
-## ✅ `NAI_Bounds_Full.lean` — NAI Composite Index Bounds and Monotonicity
+The reviewed Lean files do not establish:
 
-Defines the composite Nouseux Activation Index over 6 sub-indices ($ISI$, $IPM$, $ICM$, $IAI$, $IDC$, $ICI$).
+- convergence of a general time-varying trajectory;
+- a general strict-contraction theorem;
+- certification of a Boolean implementation of band membership;
+- empirical validity of the Nouseux model;
+- complete formal verification of every component of the model.
 
-### Key theorems
+Detailed theorem descriptions and build instructions are available in:
 
-- **`NAI_104_bounds`** — Proves $NAI_{1.04} \in [-1/6, 5/6]$.
-- **`NAI_105_bounds`** — Proves $NAI_{1.05} \in [0, 1]$.
-- **12 monotonicity lemmas** — Strict monotonicity of NAI with respect to each positive component and inverse monotonicity with respect to $IDC$ (deliberate control).
+- [`Nouseux/Formal/README.md`](Nouseux/Formal/README.md)
 
-### Sample statement
+## Repository structure
 
-```lean
-theorem NAI_104_bounds (ISI IPM ICM IAI IDC ICI : ℝ)
-    (h1 : 0 ≤ ISI ∧ ISI ≤ 1) (h2 : 0 ≤ IPM ∧ IPM ≤ 1)
-    (h3 : 0 ≤ ICM ∧ ICM ≤ 1) (h4 : 0 ≤ IAI ∧ IAI ≤ 1)
-    (h5 : 0 ≤ IDC ∧ IDC ≤ 1) (h6 : 0 ≤ ICI ∧ ICI ≤ 1) :
-    -1/6 ≤ NAI_104 ISI IPM ICM IAI IDC ICI ∧
-    NAI_104 ISI IPM ICM IAI IDC ICI ≤ 5/6
+The reviewed formal proofs are located in:
+
+```text
+Nouseux/Formal/
+```
+
+The directory contains:
+
+- `NAI_Bounds_Full.lean`
+- `Threshold_Full.lean`
+- `Recursion_Full.lean`
+- `Recursion_Invariance.lean`
+- `Recursion_Monotonicity.lean`
+- `Recursion_FixedPoint.lean`
+
+## Building
+
+Use the Lean version specified in `lean-toolchain`.
+
+```bash
+lake update
+lake build Nouseux
+```
+
+A successful build of the exact repository revision confirms that its Lean files compile. Dependencies on axioms or classical principles should be inspected separately with commands such as `#print axioms`.
+
+## Source and archival record
+
+- Source repository: https://github.com/Nouseux/Nouseux-Lean-Verification
+- Archived release and DOI: to be added after publication on Zenodo
+
+## Citation
+
+Please cite the archived Zenodo release corresponding to the exact repository tag rather than the evolving `main` branch.
