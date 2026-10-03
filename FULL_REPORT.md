@@ -1,29 +1,29 @@
 # 📊 RAPPORT COMPLET - NOUSEUX-LEAN-VERIFICATION
-**Date** : 03 October 2026, 08:08
-**Commit** : 89bcdfb
+**Date** : 03 October 2026, 08:31
+**Commit** : 7815060
 
 ## ✅ MODULES COMPILÉS
 
-⚠ [894/918] Replayed Nouseux.Formal.Recursion_Full
-⚠ [3139/3144] Replayed Nouseux.FoldDED.Core
-⚠ [3142/3167] Replayed Nouseux.Formal.Threshold_Full
-⚠ [3143/3167] Replayed Nouseux.Formal.NAI_Bounds_Full
-⚠ [3160/3167] Replayed Nouseux.FoldDED.Dynamics
-ℹ [3161/3167] Replayed Nouseux.FoldDED.Theorems
-⚠ [3163/3167] Replayed Nouseux.Basic.Recursion
-⚠ [3164/3167] Replayed Nouseux.Basic.Threshold
-ℹ [3165/3167] Replayed Nouseux.FoldDED.Regimes
-⚠ [3166/3167] Built Nouseux.Basic.NAI_Bounds (881s)
+⚠ [894/908] Replayed Nouseux.Formal.Recursion_Full
+⚠ [3139/3168] Replayed Nouseux.Formal.Threshold_Full
+⚠ [3140/3168] Replayed Nouseux.Formal.NAI_Bounds_Full
+⚠ [3144/3168] Replayed Nouseux.FoldDED.Core
+⚠ [3160/3168] Replayed Nouseux.FoldDED.Dynamics
+ℹ [3161/3168] Replayed Nouseux.FoldDED.Theorems
+⚠ [3162/3168] Replayed Nouseux.Basic.Recursion
+⚠ [3163/3168] Replayed Nouseux.Basic.NAI_Bounds
+⚠ [3164/3168] Replayed Nouseux.Basic.Threshold
+ℹ [3165/3168] Replayed Nouseux.FoldDED.Regimes
 
 ## 📈 STATISTIQUES
 
 | Métrique | Valeur |
 |----------|--------|
-| Fichiers .lean | 14 |
-| Lignes de code | 708 |
+| Fichiers .lean | 15 |
+| Lignes de code | 751 |
 | Théorèmes (Regimes) | 4 |
 | Théorèmes (Theorems) | 4 |
-| Définitions | 14 |
+| Définitions | 15 |
 
 ## 🧩 THÉORÈMES REGIMES
 
@@ -63,6 +63,7 @@ Nouseux/
 ├── FoldDED
 │   ├── Core.lean
 │   ├── Dynamics.lean
+│   ├── NeuralValidation.lean
 │   ├── Regimes.lean
 │   └── Theorems.lean
 ├── FoldDED.lean
@@ -76,7 +77,7 @@ Nouseux/
     ├── Threshold_Full.lean
     └── V1.04ter.md
 
-4 directories, 17 files
+4 directories, 18 files
 ```
 
 ---
