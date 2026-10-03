@@ -1,5 +1,4 @@
-import Mathlib.Data.Real.Basic
-Mathlib.Data.Real.Basic
+import Mathlib.Basic.Real.Basic
 import Mathlib.Tactic
 /-!
 # NAI Bounds for Nouseux Consistency
