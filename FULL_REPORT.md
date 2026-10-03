@@ -1,10 +1,9 @@
 # 📊 RAPPORT COMPLET - NOUSEUX-LEAN-VERIFICATION
-**Date** : 03 October 2026, 08:31
-**Commit** : 7815060
+**Date** : 03 October 2026, 08:41
+**Commit** : b7043e0
 
 ## ✅ MODULES COMPILÉS
 
-⚠ [894/908] Replayed Nouseux.Formal.Recursion_Full
 ⚠ [3139/3168] Replayed Nouseux.Formal.Threshold_Full
 ⚠ [3140/3168] Replayed Nouseux.Formal.NAI_Bounds_Full
 ⚠ [3144/3168] Replayed Nouseux.FoldDED.Core
@@ -14,13 +13,14 @@
 ⚠ [3163/3168] Replayed Nouseux.Basic.NAI_Bounds
 ⚠ [3164/3168] Replayed Nouseux.Basic.Threshold
 ℹ [3165/3168] Replayed Nouseux.FoldDED.Regimes
+⚠ [3166/3168] Replayed Nouseux.FoldDED.NeuralValidation
 
 ## 📈 STATISTIQUES
 
 | Métrique | Valeur |
 |----------|--------|
 | Fichiers .lean | 15 |
-| Lignes de code | 751 |
+| Lignes de code | 750 |
 | Théorèmes (Regimes) | 4 |
 | Théorèmes (Theorems) | 4 |
 | Définitions | 15 |
