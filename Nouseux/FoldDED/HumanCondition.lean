@@ -60,15 +60,9 @@ noncomputable def evolve_rea (s : REAState) (dt : ℝ) : REAState :=
   let s' := evolve s.toDEDState dt
   { toDEDState := s'
     phase := next_phase s.phase
-    h_reflection := by
-      intro h
-      sorry  -- Requires proof that evolution maintains phase invariants
-    h_emotion := by
-      intro h
-      sorry
-    h_action := by
-      intro h
-      sorry }
+    h_reflection := by sorry
+    h_emotion := by sorry
+    h_action := by sorry }
 
 /-!
 ## Theorem 1: REA Cycle Completeness
@@ -96,19 +90,18 @@ This formalizes the role of affect in mediating cognition and behavior.
 
 theorem emotion_bridges_reflection_action (s₁ s₂ s₃ : REAState)
   (h₁ : s₁.phase = Phase.Reflection)
-  (h₂ : s₂.phase = Phase.Action)
   (h_seq : ∃ dt₁ dt₂, dt₁ ≥ 0 ∧ dt₂ ≥ 0 ∧ 
     (s₂ = evolve_rea (evolve_rea s₁ dt₁) dt₂ ∨
      s₃ = evolve_rea s₁ dt₁ ∧ s₂ = evolve_rea s₃ dt₂)) :
   ∃ s_mid : REAState, s_mid.phase = Phase.Emotion := by
-  obtain ⟨dt₁, dt₂, h_dt₁, h_dt₂, h_or⟩ := h_seq
+  obtain ⟨dt₁, dt₂, _h_dt₁, _h_dt₂, h_or⟩ := h_seq
   cases h_or with
-  | inl h_direct =>
+  | inl _h_direct =>
     use evolve_rea s₁ dt₁
     unfold evolve_rea next_phase
     simp [h₁]
   | inr h_via =>
-    obtain ⟨h_s₃, h_s₂⟩ := h_via
+    obtain ⟨h_s₃, _h_s₂⟩ := h_via
     use s₃
     rw [h_s₃]
     unfold evolve_rea next_phase
@@ -130,8 +123,10 @@ theorem rea_preserves_coherence (s : REAState)
   unfold evolve_rea
   simp
   constructor
-  · exact h_init.1
-  · have h_dec := coherence_decreases s.toDEDState dt h_dt h_init.1
+  · -- Lower bound: need to show evolve preserves non-negativity
+    sorry
+  · -- Upper bound: coherence decreases, so stays ≤ 1
+    have h_dec := coherence_decreases s.toDEDState dt h_dt h_init.1
     calc (evolve s.toDEDState dt).coherence
       _ ≤ s.coherence := h_dec
       _ ≤ 1 := h_init.2
@@ -149,23 +144,27 @@ theorem rea_ded_correspondence (s_rea : REAState) :
     s_ded.energy = s_rea.energy ∧
     s_ded.fold_depth = s_rea.fold_depth := by
   use s_rea.toDEDState
-  simp [DEDState.coherence, DEDState.energy, DEDState.fold_depth]
+  constructor
+  · rfl
+  constructor
+  · rfl
+  · rfl
 
 /-!
 ## Auxiliary Lemmas
 -/
 
 -- Phase transitions are cyclic
-lemma phase_cycle_period_3 : ∀ p : Phase,
-  next_phase (next_phase (next_phase p)) = p := by
-  intro p
-  cases p <;> rfl
+lemma phase_cycle_period_3 : ∀ phase : Phase,
+  next_phase (next_phase (next_phase phase)) = phase := by
+  intro phase
+  cases phase <;> rfl
 
 -- Each phase has a unique successor
-lemma phase_transition_unique (p : Phase) :
-  ∃! p', p' = next_phase p := by
-  cases p <;> {
-    use next_phase p
+lemma phase_transition_unique (phase : Phase) :
+  ∃! p', p' = next_phase phase := by
+  cases phase <;> {
+    use next_phase phase
     constructor
     · rfl
     · intro p' h
