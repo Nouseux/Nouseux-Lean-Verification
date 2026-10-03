@@ -1,6 +1,7 @@
 import Nouseux.FoldDED.Core
 import Nouseux.FoldDED.Dynamics
 import Nouseux.FoldDED.Regimes
+import Nouseux.FoldDED.Theorems
 
 /-!
 # The Human Condition: REA Cycle
@@ -29,11 +30,6 @@ The REA cycle captures the essence of human collaborative consciousness:
 2. `emotion_bridges_reflection_action`: E is necessary between R and A
 3. `rea_preserves_coherence`: Coherence remains bounded in [0,1]
 4. `rea_ded_correspondence`: REA ↔ DED structural isomorphism
-
-## References
-
-- Renno, F. (2024). *SAPIEN2, HERO, EQUILIBRIUM* (Sculptures)
-- Nouseux Theory (2025). *Collaborative Consciousness Framework*
 -/
 
 namespace Nouseux.FoldDED.HumanCondition
@@ -59,8 +55,8 @@ def next_phase : Phase → Phase
 | Phase.Emotion => Phase.Action
 | Phase.Action => Phase.Reflection
 
--- REA evolution
-def evolve_rea (s : REAState) (dt : ℝ) : REAState :=
+-- REA evolution (noncomputable because evolve is noncomputable)
+noncomputable def evolve_rea (s : REAState) (dt : ℝ) : REAState :=
   let s' := evolve s.toDEDState dt
   { toDEDState := s'
     phase := next_phase s.phase
@@ -82,20 +78,14 @@ This captures the fundamental cyclicity of human collaborative cognition.
 -/
 
 theorem rea_cycle_completeness (trajectory : ℕ → REAState)
-  (h_evolve : ∀ n, ∃ dt ≥ 0, trajectory (n+1) = evolve_rea (trajectory n) dt) :
+  (h_evolve : ∀ n, ∃ dt, dt ≥ 0 ∧ trajectory (n+1) = evolve_rea (trajectory n) dt) :
   ∀ n, ∃ k₁ k₂ k₃, 
     (trajectory (n + k₁)).phase = Phase.Reflection ∧
     (trajectory (n + k₂)).phase = Phase.Emotion ∧
     (trajectory (n + k₃)).phase = Phase.Action := by
   intro n
-  -- The cycle has period 3, so we can take k₁ = 0, k₂ = 1, k₃ = 2
-  -- (assuming trajectory starts at Reflection)
   use 0, 1, 2
-  constructor
-  · sorry  -- Requires induction on phase transitions
-  constructor
-  · sorry
-  · sorry
+  sorry
 
 /-!
 ## Theorem 2: Emotion Bridges Reflection and Action
@@ -107,15 +97,13 @@ This formalizes the role of affect in mediating cognition and behavior.
 theorem emotion_bridges_reflection_action (s₁ s₂ s₃ : REAState)
   (h₁ : s₁.phase = Phase.Reflection)
   (h₂ : s₂.phase = Phase.Action)
-  (h_seq : ∃ dt₁ dt₂ ≥ 0, 
-    s₂ = evolve_rea (evolve_rea s₁ dt₁) dt₂ ∨
-    s₃ = evolve_rea s₁ dt₁ ∧ s₂ = evolve_rea s₃ dt₂) :
+  (h_seq : ∃ dt₁ dt₂, dt₁ ≥ 0 ∧ dt₂ ≥ 0 ∧ 
+    (s₂ = evolve_rea (evolve_rea s₁ dt₁) dt₂ ∨
+     s₃ = evolve_rea s₁ dt₁ ∧ s₂ = evolve_rea s₃ dt₂)) :
   ∃ s_mid : REAState, s_mid.phase = Phase.Emotion := by
-  -- By definition of next_phase, Reflection → Emotion → Action
   obtain ⟨dt₁, dt₂, h_dt₁, h_dt₂, h_or⟩ := h_seq
   cases h_or with
   | inl h_direct =>
-    -- s₂ = evolve_rea (evolve_rea s₁ dt₁) dt₂
     use evolve_rea s₁ dt₁
     unfold evolve_rea next_phase
     simp [h₁]
@@ -135,19 +123,15 @@ This ensures physical plausibility of the model.
 
 theorem rea_preserves_coherence (s : REAState)
   (h_init : 0 ≤ s.coherence ∧ s.coherence ≤ 1) :
-  ∀ dt ≥ 0, 
+  ∀ dt, dt ≥ 0 → 
     let s' := evolve_rea s dt
     0 ≤ s'.coherence ∧ s'.coherence ≤ 1 := by
   intro dt h_dt
   unfold evolve_rea
   simp
-  -- Follows from coherence_decreases in Theorems.lean
   constructor
-  · -- 0 ≤ coherence
-    have h_dec := coherence_decreases s.toDEDState dt h_dt h_init.1
-    exact h_init.1
-  · -- coherence ≤ 1
-    have h_dec := coherence_decreases s.toDEDState dt h_dt h_init.1
+  · exact h_init.1
+  · have h_dec := coherence_decreases s.toDEDState dt h_dt h_init.1
     calc (evolve s.toDEDState dt).coherence
       _ ≤ s.coherence := h_dec
       _ ≤ 1 := h_init.2
@@ -172,8 +156,9 @@ theorem rea_ded_correspondence (s_rea : REAState) :
 -/
 
 -- Phase transitions are cyclic
-lemma phase_cycle_period_3 (p : Phase) :
+lemma phase_cycle_period_3 : ∀ p : Phase,
   next_phase (next_phase (next_phase p)) = p := by
+  intro p
   cases p <;> rfl
 
 -- Each phase has a unique successor
@@ -193,18 +178,18 @@ lemma coherence_determines_phase (s : REAState) :
   (s.coherence ≤ 0.3 → s.phase = Phase.Action ∨ s.phase = Phase.Emotion) := by
   constructor
   · intro h_high
-    cases s.phase with
+    cases h_eq : s.phase with
     | Reflection => left; rfl
     | Emotion => right; rfl
     | Action => 
-      have h_action := s.h_action rfl
+      have h_action := s.h_action h_eq
       linarith
   · intro h_low
-    cases s.phase with
+    cases h_eq : s.phase with
     | Action => left; rfl
     | Emotion => right; rfl
     | Reflection =>
-      have h_refl := s.h_reflection rfl
+      have h_refl := s.h_reflection h_eq
       linarith
 
 end Nouseux.FoldDED.HumanCondition
