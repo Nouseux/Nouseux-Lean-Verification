@@ -67,19 +67,21 @@ theorem fusion_fragmentation_disjoint (s : DEDState) :
   linarith
 
 /-- The three regimes cover the entire state space (assuming coherence ∈ [0,1]) -/
-theorem regimes_cover (s : DEDState) (h0 : (0:ℝ) ≤ s.coherence) (h1 : s.coherence ≤ (1:ℝ)) :
+theorem regimes_cover (s : DEDState) (h0 : 0 ≤ s.coherence) (h1 : s.coherence ≤ 1) :
     fusion_regime s ∨ nouseux_regime s ∨ fragmentation_regime s := by
   unfold fusion_regime nouseux_regime fragmentation_regime
   by_cases h : s.coherence ≤ 0.3
-  · right; right; exact ⟨h0, h⟩
+  · right; right
+    constructor
+    · norm_num; exact h0
+    · exact h
   · by_cases h' : s.coherence ≤ 0.7
     · right; left; constructor
       · linarith
       · exact h'
     · left; constructor
       · linarith
-      · exact h1
-
+      · norm_num; exact h1
 /-! ### Summary -/
 
 #check fusion_regime
