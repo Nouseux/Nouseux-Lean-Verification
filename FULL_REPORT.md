@@ -1,6 +1,6 @@
 # 📊 RAPPORT COMPLET - NOUSEUX-LEAN-VERIFICATION
-**Date** : 03 October 2026, 09:06
-**Commit** : c345d99
+**Date** : 03 October 2026, 09:15
+**Commit** : 10abf88
 **Branche** : main
 
 ---
@@ -34,7 +34,7 @@ et neurosciences computationnelles.
 | Métrique | Valeur | Progression |
 |----------|--------|-------------|
 | **Fichiers .lean** | 16 | - |
-| **Lignes de code** | 960 | - |
+| **Lignes de code** | 945 | - |
 | **Théorèmes prouvés** | 11 | 11/23 (48%) |
 | **Théorèmes avec sorry** | 1 | coherence_gradient_monotone |
 | **Validation EEG** | 2 | fusion + fragmentation |
@@ -234,8 +234,8 @@ Nouseux/
 ## 📞 RESSOURCES
 
 - **Dépôt GitHub** : https://github.com/Nouseux/Nouseux-Lean-Verification
-- **Commit actuel** : `c345d99`
-- **Dernière mise à jour** : 03 October 2026, 09:06
+- **Commit actuel** : `10abf88`
+- **Dernière mise à jour** : 03 October 2026, 09:15
 
 ---
 
