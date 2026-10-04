@@ -41,28 +41,33 @@ inductive Phase
 | Action      -- Variable coherence, behavioral output
 deriving DecidableEq, Repr
 
--- REA state extends DED state with phase information
-structure REAState extends DEDState where
-  phase : Phase
-  -- Phase-coherence consistency
-  h_reflection : phase = Phase.Reflection → coherence ≥ 0.7
-  h_emotion : phase = Phase.Emotion → 0.3 ≤ coherence ∧ coherence ≤ 0.7
-  h_action : phase = Phase.Action → coherence ≤ 0.3
+  -- REA state extends DED state with phase information
+  structure REAState extends DEDState where
+    phase : Phase
 
--- Phase transition function
-def next_phase : Phase → Phase
-| Phase.Reflection => Phase.Emotion
-| Phase.Emotion => Phase.Action
-| Phase.Action => Phase.Reflection
+  -- Phase transition function
+  def next_phase : Phase → Phase
+    | Phase.Reflection => Phase.Emotion
+    | Phase.Emotion => Phase.Action
+    | Phase.Action => Phase.Reflection
 
--- REA evolution (noncomputable because evolve is noncomputable)
-noncomputable def evolve_rea (s : REAState) (dt : ℝ) : REAState :=
-  let s' := evolve s.toDEDState dt
-  { toDEDState := s'
-    phase := next_phase s.phase
-    h_reflection := by sorry
-    h_emotion := by sorry
-    h_action := by sorry }
+  -- Optional phase/coherence predicates
+  def ReflectionCondition (s : REAState) : Prop :=
+    s.phase = Phase.Reflection → s.coherence ≥ 0.7
+
+  def EmotionCondition (s : REAState) : Prop :=
+    s.phase = Phase.Emotion →
+      0.3 ≤ s.coherence ∧ s.coherence ≤ 0.7
+
+  def ActionCondition (s : REAState) : Prop :=
+    s.phase = Phase.Action → s.coherence ≤ 0.3
+
+  -- REA evolution
+  noncomputable def evolve_rea (s : REAState) (dt : ℝ) : REAState :=
+    let s' := evolve s.toDEDState dt
+    { toDEDState := s'
+      phase := next_phase s.phase }
+
 
 /-!
 ## Theorem 1: REA Cycle Completeness
@@ -163,23 +168,35 @@ lemma phase_transition_unique (phase : Phase) :
   exact hy
 
 -- Coherence determines phase constraints
-lemma coherence_determines_phase (s : REAState) :
-  (s.coherence ≥ 0.7 → s.phase = Phase.Reflection ∨ s.phase = Phase.Emotion) ∧
-  (s.coherence ≤ 0.3 → s.phase = Phase.Action ∨ s.phase = Phase.Emotion) := by
+lemma coherence_determines_phase (s : REAState)
+    (h_reflection : ReflectionCondition s)
+    (h_action : ActionCondition s) :
+    (s.coherence ≥ 0.7 → s.phase = Phase.Reflection ∨ s.phase = Phase.Emotion) ∧
+    (s.coherence ≤ 0.3 → s.phase = Phase.Action ∨ s.phase = Phase.Emotion) := by
   constructor
   · intro h_high
     cases h_eq : s.phase with
-    | Reflection => left; rfl
-    | Emotion => right; rfl
-    | Action => 
-      have h_action := s.h_action h_eq
-      linarith
+    | Reflection =>
+        left
+        rfl
+    | Emotion =>
+        right
+        rfl
+    | Action =>
+        have h_action_low : s.coherence ≤ 0.3 :=
+          h_action h_eq
+        linarith
   · intro h_low
     cases h_eq : s.phase with
-    | Action => left; rfl
-    | Emotion => right; rfl
+    | Action =>
+        left
+        rfl
+    | Emotion =>
+        right
+        rfl
     | Reflection =>
-      have h_refl := s.h_reflection h_eq
-      linarith
+        have h_reflection_high : s.coherence ≥ 0.7 :=
+          h_reflection h_eq
+        linarith
 
 end Nouseux.FoldDED.HumanCondition
