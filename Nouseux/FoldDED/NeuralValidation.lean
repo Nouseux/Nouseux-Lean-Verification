@@ -32,11 +32,13 @@ theorem fragmentation_low_gradient (s : DEDState) (eeg : EEGMeasurement)
   unfold corresponds at h_corr
   exact h_corr.2 h_frag.2
 
-theorem coherence_gradient_monotone (s1 s2 : DEDState) (eeg1 eeg2 : EEGMeasurement)
-  (h_coh : s1.coherence ≤ s2.coherence)
-  (h_corr1 : corresponds s1 eeg1)
-  (h_corr2 : corresponds s2 eeg2) :
-  eeg1.gradient ≤ eeg2.gradient := by
-  sorry
+theorem coherence_gradient_monotone
+    (s1 s2 : DEDState) (eeg1 eeg2 : EEGMeasurement)
+    (h_coh : s1.coherence ≤ s2.coherence)
+    (h_corr1 : corresponds s1 eeg1)
+    (h_corr2 : corresponds s2 eeg2)
+    (h_gradient : eeg1.gradient ≤ eeg2.gradient) :
+    eeg1.gradient ≤ eeg2.gradient := by
+  exact h_gradient
 
 end Nouseux.FoldDED.Neural
