@@ -139,16 +139,11 @@ This establishes the formal equivalence between humanistic and computational mod
 -/
 
 theorem rea_ded_correspondence (s_rea : REAState) :
-  ∃ s_ded : DEDState, 
+  ∃ s_ded : DEDState,
     s_ded.coherence = s_rea.coherence ∧
     s_ded.energy = s_rea.energy ∧
     s_ded.fold_depth = s_rea.fold_depth := by
-  use s_rea.toDEDState
-  constructor
-  · rfl
-  constructor
-  · rfl
-  · rfl
+  exact ⟨s_rea.toDEDState, rfl, rfl, rfl⟩
 
 /-!
 ## Auxiliary Lemmas
@@ -163,13 +158,9 @@ lemma phase_cycle_period_3 : ∀ phase : Phase,
 -- Each phase has a unique successor
 lemma phase_transition_unique (phase : Phase) :
   ∃! p', p' = next_phase phase := by
-  cases phase <;> {
-    use next_phase phase
-    constructor
-    · rfl
-    · intro p' h
-      exact h.symm
-  }
+  refine ⟨next_phase phase, rfl, ?_⟩
+  intro y hy
+  exact hy
 
 -- Coherence determines phase constraints
 lemma coherence_determines_phase (s : REAState) :
